@@ -1,43 +1,39 @@
-from bottle import route, run
-from bottle import get, post, request
-import mysql.connector
+from bottle import route, run,redirect,get, post, request,template,response
+from functions import check_login,all_products
+from conection import conectar
+from json import dumps
 
-cnx = mysql.connector.connect(user='root', password='12345', host='localhost', database='exposicion')
+conection=conectar()
 
 @route('/')
+
 @get('/login')
 def login():
-        return '''
-        <form action="/login" method="post">
-            Username: <input name="username" type="text" />
-            Password: <input name="password" type="password" />
-            <input value="Login" type="submit" />
-        </form>
-    '''
+    return template('Templates/index.tpl')
+
 @post('/login')
 def do_login():
     username = request.forms.get('username')
     password = request.forms.get('password')
-    if check_login(username, password):
-        return "<p>Your login information was correct.</p>"
+    if check_login(username, password, conection):
+        redirect("/products")
     else:
         return "<p>Login failed.</p>"
 
 
+@get('/products')
+def products():
+    return template('Templates/products.tpl')
 
+@get('/products.json')
+def products():
+    table=all_products(conection)
+    response.content_type = 'application/json'
+    return dumps(table)
 
-
-def check_login(username,password):
-        result=False
-        cursor = cnx.cursor(buffered=True)
-        select=("SELECT * FROM user WHERE username='"+username+"' AND password='"+password+"'")
-        cursor.execute(select)
-        if not cursor.rowcount:
-                result=False
-        else:
-                result=True
-        cursor.close()
-        return result
+@get('/products/create')
+def products_create():
+    return "create producto"
 
 run(host='localhost', port=8080, debug=True)
 
