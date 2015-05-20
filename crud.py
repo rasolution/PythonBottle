@@ -1,5 +1,5 @@
 from bottle import route, run,redirect,get, post, request,template,response
-from functions import check_login,all_products,create_product
+from functions import check_login,all_products,create_product,get_product_edit,edit_product,delete_product
 from conection import conectar
 from json import dumps
 
@@ -43,12 +43,28 @@ def do_products_create():
     redirect("/products")
 
 @get('/products/edit/<ID>')
-def products(ID):
-    return "el id es "+str(ID)
+def products_edit(ID):
+    form= get_product_edit(ID,conection)
+    return template('Templates/edit_product.tpl',form=form)
 
-@get('/products/edit/<ID>')
-def products(ID):
-    return "el id es"+str(ID)
+@post('/products/edit')
+def do_products_edit():
+    id = request.forms.get('id')
+    name = request.forms.get('name')
+    price = request.forms.get('price')
+    edit_product(id,name,price,conection)
+    redirect("/products")
+
+@get('/products/delete/<ID>')
+def products_delete(ID):
+    return template('Templates/delete_product.tpl', id=ID)
+
+@post('/products/delete')
+def do_products_delete():
+    id = request.forms.get('id')
+    delete_product(id,conection)
+    redirect("/products")
+
 
 run(host='localhost', port=8080, debug=True)
 
