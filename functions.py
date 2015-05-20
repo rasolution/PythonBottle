@@ -20,3 +20,11 @@ def all_products(conection):
     rows = cursor.fetchall()
     cursor.close()
     return rows
+
+def create_product(name, price, conection):
+    cursor = conection.cursor()
+    select = ("INSERT INTO products (name,price) values (%s, %s)")
+    product_data=(name, price)
+    cursor.execute(select, product_data)
+    cursor.close()
+    conection.commit()
