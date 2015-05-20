@@ -7,17 +7,17 @@
     <script src="http://localhost/Bottle/JS/index.js"></script>
     <title></title>
 </head>
-<body">
-    <h1>Products</h1>
+<body>
+    <h1>Productos</h1>
     <a href="/products/create"><button>Crear</button></a>
     <br/>
     <table id="products" class="table">
         <tr>
             <td><strong>ID</strong></td>
-            <td><strong>Name</strong></td>
-            <td><strong>Price</strong></td>
-            <td><strong>Create</strong></td>
-            <td><strong>Edit</strong></td>
+            <td><strong>Nonmbre</strong></td>
+            <td><strong>Precio</strong></td>
+            <td><strong>Crear</strong></td>
+            <td><strong>Editar</strong></td>
         </tr>
     </table>
 
